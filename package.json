@@ -1,0 +1,32 @@
+{
+	"name": "array-queue",
+	"version": "1.0.0",
+	"description": "A queue backed by an array",
+	"keywords": [
+		"queue"
+	],
+	"bugs": "https://github.com/charmander/array-queue/issues",
+	"license": "ISC",
+	"author": {
+		"name": "Charmander",
+		"email": "~@charmander.me",
+		"url": "https://charmander.me/"
+	},
+	"files": [
+		"index.js"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/charmander/array-queue"
+	},
+	"devDependencies": {
+		"@charmander/eslint-config-base": "1.0.2",
+		"tap": "^11.0.1"
+	},
+	"scripts": {
+		"test": "tap test --timeout=256"
+	},
+	"engines": {
+		"node": ">=4.0.0"
+	}
+}
