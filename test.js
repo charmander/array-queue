@@ -38,16 +38,13 @@ test(`sequences of ${OPERATIONS} operations`, () => {
 test('complete fill/empty up to 10000', () => {
 	const queue = new Queue();
 
-	counts: for (let count = 1; count <= 10000; count++) {
+	for (let count = 1; count <= 10000; count++) {
 		for (let i = 0; i < count; i++) {
 			queue.enqueue(i);
 		}
 
 		for (let i = 0; i < count; i++) {
-			if (queue.dequeue() !== i) {
-				assert.fail('fill/empty ' + count + ' at ' + i);
-				break counts;
-			}
+			assert.strictEqual(queue.dequeue(), i);
 		}
 	}
 });
