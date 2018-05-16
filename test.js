@@ -49,6 +49,19 @@ test('complete fill/empty up to 10000', () => {
 	}
 });
 
+test('complete fill/empty of 5 million', () => {
+	const queue = new Queue();
+	const count = 5000000;
+
+	for (let i = 0; i < count; i++) {
+		queue.enqueue(i);
+	}
+
+	for (let i = 0; i < count; i++) {
+		assert.strictEqual(queue.dequeue(), i);
+	}
+});
+
 test('capacities grow by a factor of 1.5', () => {
 	const queue = new Queue();
 
