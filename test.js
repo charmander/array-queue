@@ -5,43 +5,35 @@ const test = require('@charmander/test')(module);
 
 const Queue = require('./');
 
-const HEX = '0123456789abcdef';
-const hex2 = n =>
-	HEX[n >> 4] + HEX[n & 0xf];
+const OPERATIONS = 20;
 
-for (let high = 0; high < 0x8000000; high += 0x100000) {
-	test('sequences of 27 operations › starting with 0x' + hex2(high >> 20), () => {
-		sequences: for (let low = 0; low < 0x100000; low++) {
-			const sequence = high | low;
-			const testQueue = new Queue();
-			let left = 0;
-			let right = 1;
+test(`sequences of ${OPERATIONS} operations`, () => {
+	for (let sequence = 0; sequence < 1 << OPERATIONS; sequence++) {
+		const testQueue = new Queue();
+		let left = 0;
+		let right = 0;
 
-			testQueue.enqueue(0);
+		for (let bit = 0; bit < 27; bit++) {
+			if ((sequence & (1 << bit)) === 0) {
+				testQueue.enqueue(right);
+				right++;
+			} else {
+				let expected;
 
-			for (let bit = 0; bit < 27; bit++) {
-				if ((sequence & (1 << bit)) === 0) {
-					testQueue.enqueue(right);
-					right++;
+				if (left === right) {
+					expected = null;
 				} else {
-					let expected;
-
-					if (left === right) {
-						expected = null;
-					} else {
-						expected = left;
-						left++;
-					}
-
-					if (testQueue.tryDequeue() !== expected || testQueue.count !== right - left) {
-						assert.fail(sequence);
-						break sequences;
-					}
+					expected = left;
+					left++;
 				}
+
+				assert.strictEqual(testQueue.tryDequeue(), expected);
 			}
+
+			assert.strictEqual(testQueue.count, right - left);
 		}
-	});
-}
+	}
+});
 
 test('complete fill/empty up to 10000', () => {
 	const queue = new Queue();
