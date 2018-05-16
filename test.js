@@ -5,43 +5,6 @@ const test = require('@charmander/test')(module);
 
 const Queue = require('./');
 
-class ReferenceQueue {
-	constructor() {
-		this.head = null;
-		this.tail = null;
-		this.count = 0;
-	}
-
-	enqueue(value) {
-		const newTail = {next: null, value: value};
-
-		if (this.head === null) {
-			this.head = this.tail = newTail;
-		} else {
-			this.tail.next = newTail;
-			this.tail = newTail;
-		}
-
-		this.count++;
-	}
-
-	tryDequeue() {
-		if (this.head === null) {
-			return null;
-		}
-
-		const result = this.head.value;
-		this.head = this.head.next;
-
-		if (this.head === null) {
-			this.tail = null;
-		}
-
-		this.count--;
-		return result;
-	}
-}
-
 const HEX = '0123456789abcdef';
 const hex2 = n =>
 	HEX[n >> 4] + HEX[n & 0xf];
@@ -51,19 +14,26 @@ for (let high = 0; high < 0x8000000; high += 0x100000) {
 		sequences: for (let low = 0; low < 0x100000; low++) {
 			const sequence = high | low;
 			const testQueue = new Queue();
-			const referenceQueue = new ReferenceQueue();
-			let n = 1;
+			let left = 0;
+			let right = 1;
 
 			testQueue.enqueue(0);
-			referenceQueue.enqueue(0);
 
 			for (let bit = 0; bit < 27; bit++) {
 				if ((sequence & (1 << bit)) === 0) {
-					testQueue.enqueue(n);
-					referenceQueue.enqueue(n);
-					n++;
+					testQueue.enqueue(right);
+					right++;
 				} else {
-					if (testQueue.tryDequeue() !== referenceQueue.tryDequeue() || testQueue.count !== referenceQueue.count) {
+					let expected;
+
+					if (left === right) {
+						expected = null;
+					} else {
+						expected = left;
+						left++;
+					}
+
+					if (testQueue.tryDequeue() !== expected || testQueue.count !== right - left) {
 						assert.fail(sequence);
 						break sequences;
 					}
