@@ -13,7 +13,7 @@ test(`sequences of ${OPERATIONS} operations`, () => {
 		let left = 0;
 		let right = 0;
 
-		for (let bit = 0; bit < 27; bit++) {
+		for (let bit = 0; bit < OPERATIONS; bit++) {
 			if ((sequence & (1 << bit)) === 0) {
 				testQueue.enqueue(right);
 				right++;
