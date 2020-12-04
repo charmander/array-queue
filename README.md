@@ -1,5 +1,3 @@
-[![Build status][ci image]][ci]
-
 A queue backed by an array. Like [double-ended-queue][], but single-ended.
 
 
@@ -27,6 +25,3 @@ A queue backed by an array. Like [double-ended-queue][], but single-ended.
 
 
   [double-ended-queue]: https://www.npmjs.com/package/double-ended-queue
-
-  [ci]: https://travis-ci.org/charmander/array-queue
-  [ci image]: https://api.travis-ci.org/charmander/array-queue.svg
