@@ -1,0 +1,34 @@
+name: Coverage
+
+on: [push]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install --no-save
+
+      - name: Test with coverage
+        run: node_modules/.bin/c8 --all --reporter=html node test
+
+      - name: Check coverage
+        run: node_modules/.bin/c8 check-coverage --branches=100 --functions=100 --lines=100 --statements=100
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: coverage/
