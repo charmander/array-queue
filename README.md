@@ -1,6 +1,27 @@
 A queue backed by an array. Like [double-ended-queue][], but single-ended.
 
 
+## Install
+
+```sh
+npm install array-queue
+```
+
+
+## Example
+
+```javascript
+import Queue from 'array-queue';
+
+const queue = new Queue();
+queue.enqueue(1);
+queue.enqueue(2);
+console.log(queue.dequeue());  // 1
+console.log(queue.dequeue());  // 2
+console.log(queue.dequeue());  // Error: queue empty
+```
+
+
 ## API
 
 - `new Queue()`
